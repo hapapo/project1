@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mapper.ValuationMapper">
+	<!-- bno는 댓글의 고유번호(즉 pdf상 rno) pdf상의 bno = recipeno -->
+
+	<select id="list" resultType="ValuationVO">
+		select
+		recipeno, memberid,point,comments,regDate
+		from
+		valuation
+		where recipeno =
+		#{recipeno}
+		order by regdate desc
+	</select>
+
+	<insert id="create">
+		insert into valuation (recipeno,memberid,point,
+		comments, regDate)
+		values
+		(#{recipeno},#{memberid},#{point},#{comments},sysdate)
+	</insert>
+
+	<update id="update">
+		update valuation set
+		point = #{point},
+		comments = #{comments}
+		where memberid = #{memberid} and recipeno = #{recipeno}
+	</update>
+
+	<delete id="delete">
+		delete from valuation where memberid = #{memberid} and recipeno = #{recipeno}  
+	</delete>
+
+	<select id="listPage" resultType="ValuationVO">
+		select
+		memberid, point,
+		comments, regDate
+		from
+		(select memberid, point, comments, regDate,
+		row_number() over(order by regdate desc) as rNum
+		from valuation) re
+		where rNum between #{cri.rowStart} and #{cri.rowEnd}
+		order by regdate desc
+	</select>
+
+	<!-- select recipeno,memberid,recipename,cookingtime,portion,rankno from 
+		(select recipeno,memberid,recipename,cookingtime,portion,rankno, row_number() 
+		over(order by recipeno desc) as rNum from recipe)re where rNum between #{rowStart} 
+		and #{rowEnd} order by recipeno desc -->
+
+	<select id="count" resultType="int">
+		select count(recipeno) from
+		valuation where recipeno = #{recipeno}
+	</select>
+</mapper>

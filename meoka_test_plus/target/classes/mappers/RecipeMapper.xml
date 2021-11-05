@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mappers.RecipeMapper">
+
+	<!-- REcipeno -->
+	<select id="recipeno" resultType="int">
+		SELECT
+		RECIPE_RECIPENO_SEQ.CURRVAL
+		FROM DUAL
+	</select>
+
+	<!-- 게시물 목록 -->
+	<select id="list" resultType="org.zerock.domain.RecipeVO">
+		select
+		RECIPENO,
+		MEMBERID,
+		FOODNO,
+		RECIPENAME,
+		REGDATE,
+		COOKINGTIME,
+		PORTION,
+		RANKNO
+		from book_ex.RECIPE
+	</select>
+
+	<!-- 게시물 작성 -->
+	<insert id="write" parameterType="org.zerock.domain.RecipeVO">
+		insert into
+		book_ex.RECIPE(RECIPENO,MEMBERID,RECIPENAME,COOKINGTIME,REGDATE,PORTION,RANKNO)
+		values(RECIPE_RECIPENO_SEQ.NEXTVAL,#{MEMBERID},
+		#{RECIPENAME},#{COOKINGTIME},SYSDATE,#{PORTION},#{RANKNO})
+	</insert>
+	<!-- 레시피디테일 작성 -->
+	<insert id="writeRecipeDetail"
+		parameterType="org.zerock.domain.RecipeDetailVO">
+		insert into
+		book_ex.RECIPEDETAIL(RECIPENO,RECIPEDETAILNO,RECIPEDETAIL,PHOTO)
+		values(#{RECIPENO},#{RECIPEDETAILNO},#{RECIPEDETAIL},#{PHOTO})
+	</insert>
+	<!-- 게시물 조회 -->
+	<select id="view" parameterType="int"
+		resultType="org.zerock.domain.RecipeVO">
+		select
+		RECIPENO, MEMBERID, FOODNO, RECIPENAME, REGDATE,
+		COOKINGTIME, PORTION, RANKNO
+		from
+		book_ex.RECIPE
+		where
+		RECIPENO =
+		#{RECIPENO}
+	</select>
+	<!-- 레시피 디테일 조회 -->
+	<select id="getRecipeDetailList" parameterType="int"
+		resultType="org.zerock.domain.RecipeDetailVO">
+		select
+		RECIPENO, RECIPEDETAILNO, RECIPEDETAIL, PHOTO
+		from
+		book_ex.RECIPEDETAIL
+		where
+		RECIPENO = #{RECIPENO}
+	</select>
+
+
+	<!-- 게시물 수정 -->
+	<update id="modify" parameterType="org.zerock.domain.RecipeVO">
+		update book_ex.RECIPE
+		set
+		RECIPENAME = #{RECIPENAME},
+		COOKINGTIME = #{COOKINGTIME},
+		PORTION =
+		#{PORTION},
+		RANKNO = #{RANKNO}
+		where RECIPENO = #{RECIPENO}
+	</update>
+	
+		<!-- 레시피 디테일 수정 -->
+	<update id="modifyRecipeDetail" parameterType="org.zerock.domain.RecipeDetailVO">
+		update book_ex.RECIPEDETAIL
+		set
+		RECIPENAME = #{RECIPENAME},
+		COOKINGTIME = #{COOKINGTIME},
+		PORTION =
+		#{PORTION},
+		RANKNO = #{RANKNO}
+		where RECIPENO = #{RECIPENO}
+	</update>
+
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="int">
+		delete
+		from book_ex.RECIPE
+		where RECIPENO = #{RECIPENO}
+	</delete>
+	
+	<!-- 레시피 세부내용 삭제 -->
+	<delete id="deleteRecipeDetail" parameterType="int">
+		delete
+		from
+		book_ex.recipedetail
+		where RECIPENO = #{RECIPENO}
+	</delete>
+
+	<!-- 게시물 총 갯수 -->
+	<select id="listCount" resultType="int">
+	<![CDATA[ 
+		select count(*) from
+		RECIPE
+		where recipeno>0
+	]]>
+	</select>
+
+	<!-- 게시물 목록 + 페이징 -->
+	<select id="listPage" parameterType="org.zerock.domain.Criteria"
+		resultType="org.zerock.domain.RecipeVO">
+<![CDATA[ 
+select recipeno,memberid,recipename,cookingtime,portion,rankno
+    from (select recipeno,memberid,recipename,cookingtime,portion,rankno,
+            row_number() over(order by recipeno desc) as rNum
+        from recipe)re
+    where rNum between #{rowStart} and #{rowEnd}
+        order by recipeno desc
+]]>
+	</select>
+
+	<!-- 검색 -->
+	<select id="listSearch" resultType="org.zerock.domain.RecipeVO"
+		parameterType="org.zerock.domain.SearchCriteria">
+		select recipeno,memberid,recipename,cookingtime,portion,rankno
+		from (
+		select recipeno,memberid,recipename,cookingtime,portion,rankno,
+		row_number() over(order by recipeno desc) as rNum
+		from recipe
+		where 1=1
+		<include refid="search"></include>
+		) re
+		where rNum between #{rowStart} and #{rowEnd}
+		order by recipeno desc
+	</select>
+
+
+	<select id="countSearch" resultType="int">
+	<![CDATA[
+		select count(*)
+		from recipe
+	  where recipeno > 0
+	  	]]>
+		<include refid="search"></include>
+	</select>
+
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()"> and recipename like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'r'.toString()">and rankno like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()">and memberid like '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tr'.toString()">and (recipename like '%' || #{keyword} || '%') or
+				(rankno
+				like '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+
+
+</mapper>
