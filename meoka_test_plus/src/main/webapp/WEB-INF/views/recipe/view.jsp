@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시물 조회</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
-  <script src="handlebars-v1.3.0.js"></script>
+
 <style>
 #modDiv {
 	width: 300px;
@@ -115,8 +115,9 @@
 				id='newComments'></textarea>
 		</div>
 		<button id="valuationAddBtn">완료</button>
-		
-<!-- 		<div class="row">
+
+<!-- 	<div class="row">
+	
 		<div class="col-md-12">
 
 			<div class="box box-success">
@@ -138,7 +139,7 @@
 				</div>
 			</div>
 
-			The time line
+<!-- 			The time line 
 			<ul class="timeline">
 				timeline time label
 				<li class="time-label" id="repliesDiv"><span class="bg-green">
@@ -155,9 +156,9 @@
 		
 	</div>
 	
+ -->
 
-
-           Modal
+<!--           Modal
 <div id="modifyModal" class="modal modal-primary fade" role="dialog">
   <div class="modal-dialog">
     Modal content
@@ -192,7 +193,8 @@
 	<!-- jQuery 2.1.4 -->
 	<script src="/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 	
-	<!--  
+	 
+	 <!-- 
 		<script id="template" type="text/x-handlebars-template">
 		{{#each .}}
 		<li class="replyLi" data-bno={{bno}}>
@@ -220,7 +222,8 @@
 		/* var recipeno = 55; */
 
 		var recipeno = ${view.RECIPENO};
-		var bno = $(".modal-title").html(); 
+		//var bno = $(".modal-title").html(); 
+		var bno = $("#curRecipeno").val();
 		 getPageList(1); 
 		function getAllList() {$.getJSON("/valuation/all/" + recipeno,
 							function(data) {
@@ -322,6 +325,11 @@
 			});
 		});
 
+		$("#closeBtn").on("click",function(){
+			$("#modDiv").hide("slow");
+		});
+		
+		
 		$("#valuationModBtn").on("click", function() {
 			
 			var bno = $("#curRecipeno").val();
@@ -364,9 +372,9 @@
 								$(data.list).each(
 												function() {
 													str += "<li data-recipeno='" + this.recipeno + "' data-memberid='" + this.memberid + "' class='valuationLi'>" 
-															+ this.memberid
+															 + this.memberid
 															+ ":"
-															+ this.comments
+															+ this.comments 
 															+ "<button>수정하기</button></li>";
 												});
 
@@ -410,30 +418,27 @@
 
 		});
 		
-/* 			$(".timeline").on("click", ".replyLi", function(event){
-				
-				var reply = $(this);
-				
+		$(".timeline").on("click", ".replyLi", function(event){
+			var reply = $(this);
 				$("#comments").val(reply.find('.timeline-body').text());
-				$(".modal-title").html(reply.attr("data-bno"));
-				
-			}); */
+				$(".modal-title").html(reply.attr("data-bno"));	
+		}); 
 		
 		/* 추가분 */
 		
-	/* 		Handlebars.registerHelper("prettifyDate", function(timeValue) {
+	 		Handlebars.registerHelper("prettifyDate", function(timeValue) {
 				var dateObj = new Date(timeValue);
 				var year = dateObj.getFullYear();
 				var month = dateObj.getMonth() + 1;
 				var date = dateObj.getDate();
 				return year + "/" + month + "/" + date;
-			}); */
+			}); 
 			
 			var printData = function(replyArr, target, templateObject) {
 
-				var template = Handlebars.compile(templateObject.html());
+				//var template = Handlebars.compile(templateObject.html());
 
-				var html = template(replyArr);
+				//var html = template(replyArr);
 				$(".valuationLi").remove();
 				target.after(html);
 
@@ -444,8 +449,8 @@
 			
 			var replyPage = 1;
 
-			function getPage(pageInfo) {
-			/* data = {"list":List<ValuationVO> , "pageMaker":} */
+  			function getPage(pageInfo) {
+			  //data = {"list":List<ValuationVO> , "pageMaker":} 
 				
 				$.getJSON(pageInfo, function(data) {
 					printData(data.list, $("#repliesDiv"), $('#template'));
@@ -454,7 +459,7 @@
 					$("#modifyModal").modal('hide');
 
 				});
-			}
+			} 
 	</script>
 
 

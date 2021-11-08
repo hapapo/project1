@@ -104,13 +104,18 @@ public class ValuationController {
 		System.out.println("리스트 페이지입니다.");
 		ResponseEntity<Map<String, Object>> entity = null;
 		try {
+			System.out.println("*********"+recipeno);
 			Criteria cri = new Criteria();
+			
 			cri.setPage(page);
 			PageMaker pageMaker = new PageMaker();
 			pageMaker.setCri(cri);
+			
 			Map<String, Object> map = new HashMap<String, Object>();
 			List<ValuationVO> list = service.listPage(recipeno, cri);
+			
 			map.put("list", list);
+			System.out.println(list);
 			int ValCount = service.count(recipeno);
 			pageMaker.setTotalCount(ValCount);
 			map.put("pageMaker", pageMaker);

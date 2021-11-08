@@ -39,7 +39,7 @@ public class ValuationDAOImpl implements ValuationDAO {
 	System.out.println("/* rowStart="+cri.getRowStart());
 	System.out.println("/* rowEnd="+cri.getRowEnd());
 	Map<String, Object> paramMap = new HashMap<>();
-	//paramMap.put("recipeno", recipeno);
+	paramMap.put("recipeno", recipeno);
 	paramMap.put("cri", cri);
 	return session.selectList(namespace + ".listPage", paramMap);
 	}

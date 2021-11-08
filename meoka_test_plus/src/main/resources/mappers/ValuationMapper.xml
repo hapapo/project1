@@ -34,15 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 
 	<select id="listPage" resultType="ValuationVO">
-		select
-		memberid, point,
-		comments, regDate
-		from
-		(select memberid, point, comments, regDate,
-		row_number() over(order by regdate desc) as rNum
-		from valuation) re
-		where rNum between #{cri.rowStart} and #{cri.rowEnd}
-		order by regdate desc
+		SELECT MEMBERID, RECIPENO, POINT, COMMENTS, REGDATE  FROM
+       (SELECT SEQ, MEMBERID, RECIPENO, POINT, COMMENTS, REGDATE FROM
+       (SELECT ROWNUM AS SEQ, MEMBERID, RECIPENO, POINT, COMMENTS, REGDATE  FROM
+       (SELECT * FROM VALUATION WHERE recipeno = #{recipeno} ORDER BY REGDATE DESC))
+        <![CDATA[ WHERE SEQ >= #{cri.rowStart} ) WHERE ROWNUM <= #{cri.rowEnd}]]>
 	</select>
 
 	<!-- select recipeno,memberid,recipename,cookingtime,portion,rankno from 
