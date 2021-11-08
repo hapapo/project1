@@ -52,10 +52,18 @@ public class ValuationController {
 		return entity;
 	}
 
-	@RequestMapping(value = "/{recipeno}", method = { RequestMethod.PUT, RequestMethod.PATCH })
-	public ResponseEntity<String> update(@PathVariable("bno") Integer bno, @RequestBody ValuationVO vo) {
+	@RequestMapping(value = "/{recipeno}/{memberid}", method = { RequestMethod.PUT, RequestMethod.PATCH })
+	public ResponseEntity<String> update(@PathVariable("recipeno") Integer recipeno, 
+			@PathVariable("memberid") String memberid,
+			@RequestBody ValuationVO vo) {
 		System.out.println("실행중입니다.");
-		System.out.println(bno);
+		
+		  vo.setRecipeno(recipeno); vo.setMemberid(memberid);
+		 System.out.println("******receipeno="+recipeno);
+		  System.out.println("******memberid="+memberid);
+		 
+		System.out.println(vo);
+		
 		ResponseEntity<String> entity = null;
 		try {
 
@@ -93,7 +101,7 @@ public class ValuationController {
 	@RequestMapping(value = "/{recipeno}/{page}", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> listPage(@PathVariable("recipeno") Integer recipeno,
 			@PathVariable("page") Integer page) {
-		System.out.println("실행중입니다.");
+		System.out.println("리스트 페이지입니다.");
 		ResponseEntity<Map<String, Object>> entity = null;
 		try {
 			Criteria cri = new Criteria();

@@ -9,6 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시물 조회</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.1/handlebars.js"></script>
+  <script src="handlebars-v1.3.0.js"></script>
 <style>
 #modDiv {
 	width: 300px;
@@ -322,14 +323,16 @@
 		});
 
 		$("#valuationModBtn").on("click", function() {
-
-			var bno = $(".modal-title").html();
+			
+			var bno = $("#curRecipeno").val();
+			//var bno = $(".modal-title").html();
 			console.log(this);
 			var comments = $("#comments").val();
+			var memberid =$("#curMemberid").val();
 
 			$.ajax({
 				type : 'put',
-				url : '/valuation/' + recipeno,
+				url : '/valuation/' + recipeno + '/' + memberid,
 				headers : {
 					"Content-Type" : "application/json",
 					"X-HTTP-Method-Override" : "PUT"
@@ -425,7 +428,7 @@
 				var date = dateObj.getDate();
 				return year + "/" + month + "/" + date;
 			}); */
-
+			
 			var printData = function(replyArr, target, templateObject) {
 
 				var template = Handlebars.compile(templateObject.html());
@@ -435,6 +438,7 @@
 				target.after(html);
 
 			}
+			
 
 			var bno = ${view.RECIPENO};
 			
