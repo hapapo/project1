@@ -101,6 +101,8 @@
 		book_ex.recipedetail
 		where RECIPENO = #{RECIPENO}
 	</delete>
+	
+
 
 	<!-- 게시물 총 갯수 -->
 	<select id="listCount" resultType="int">

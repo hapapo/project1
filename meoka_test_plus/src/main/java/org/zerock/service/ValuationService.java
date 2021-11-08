@@ -14,4 +14,5 @@ public interface ValuationService {
 	public List<ValuationVO> listPage(Integer recipeno, Criteria cri)
 	throws Exception;
 	public int count(Integer recipeno) throws Exception;
+	public void deleteRecipeValuation(Integer recipeno) throws Exception;
 }

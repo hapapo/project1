@@ -1,6 +1,5 @@
 package org.zerock.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,7 +18,9 @@ import org.zerock.domain.RecipeDetailVO;
 import org.zerock.domain.RecipeRequest;
 import org.zerock.domain.RecipeVO;
 import org.zerock.domain.SearchCriteria;
+import org.zerock.domain.ValuationVO;
 import org.zerock.service.RecipeService;
+import org.zerock.service.ValuationService;
 
 @Controller
 @RequestMapping("/recipe/*")
@@ -29,6 +30,9 @@ public class RecipeController {
 
 	@Inject
 	RecipeService service;
+	
+	@Inject
+	ValuationService service2;
 
 	// 게시물 목록
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -155,10 +159,16 @@ public class RecipeController {
 
 	// 게시물 삭제
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String getDelete(@RequestParam("RECIPENO") int recipeno) throws Exception {
+	public String getDelete(@RequestParam("RECIPENO") int recipeno,ValuationVO vo) throws Exception {
+		
+		System.out.println("recipeno******"+vo.getRecipeno());
+		service2.deleteRecipeValuation(recipeno);
+		System.out.println("delete 1*******************");
 		service.deleteRecipeDetail(recipeno);
+		System.out.println("delete 2******************");
 
 		service.delete(recipeno);
+		System.out.println("delete 3*******************");
 
 		return "redirect:/recipe/list";
 	}

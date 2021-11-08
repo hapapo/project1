@@ -67,7 +67,6 @@ public class RecipeDAOImpl implements RecipeDAO {
 		sql.delete(namespace+".deleteRecipeDetail", recipeno);
 	}
 	
-	
 	// 게시물 총 갯수
 	@Override
 	public int count() throws Exception {

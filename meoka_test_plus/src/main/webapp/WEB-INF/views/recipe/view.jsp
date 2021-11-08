@@ -76,10 +76,6 @@
 		<a href="/recipe/modify?RECIPENO=${view.RECIPENO}">레시피 정보 수정</a>
 	</div>
 	<div>
-		<a href="/recipe/modifyRecipeDetail?RECIPENO=${view.RECIPENO}">레시피
-			세부내용 수정</a>
-	</div>
-	<div>
 		<a href="/recipe/delete?RECIPENO=${view.RECIPENO}">레시피 삭제</a>
 	</div>
 

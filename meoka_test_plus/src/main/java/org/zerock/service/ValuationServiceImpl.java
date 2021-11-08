@@ -31,6 +31,9 @@ public class ValuationServiceImpl implements ValuationService {
 	public void delete(ValuationVO vo) throws Exception {
 	dao.delete(vo);
 	}
+	public void deleteRecipeValuation(Integer recipeno) throws Exception{
+		dao.deleteRecipeValuation(recipeno);
+	}
 	@Override
 	public List<ValuationVO> listPage(Integer recipeno, Criteria cri)throws Exception {
 	return dao.listPage(recipeno, cri);

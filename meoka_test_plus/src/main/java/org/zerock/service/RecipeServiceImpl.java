@@ -59,7 +59,7 @@ public class RecipeServiceImpl implements RecipeService {
 		dao.delete(recipeno);
 	}
 
-	// 레시피 세부내용
+	// 레시피 세부내용 삭제
 	public void deleteRecipeDetail(int recipeno) throws Exception{
 		dao.deleteRecipeDetail(recipeno);
 	}

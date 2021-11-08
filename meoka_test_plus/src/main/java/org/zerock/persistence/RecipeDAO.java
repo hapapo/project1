@@ -30,6 +30,7 @@ public interface RecipeDAO {
 
 	// 게시물 삭제
 	public void delete(int recipeno) throws Exception;
+	
 	// 레시피 세부내용
 	public void deleteRecipeDetail(int recipeno) throws Exception;
 

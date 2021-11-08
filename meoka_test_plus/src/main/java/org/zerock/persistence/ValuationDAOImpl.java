@@ -33,6 +33,11 @@ public class ValuationDAOImpl implements ValuationDAO {
 	public void delete(ValuationVO vo) throws Exception {
 	session.delete(namespace + ".delete", vo);
 	}
+	
+	public void deleteRecipeValuation(Integer recipeno) throws Exception{
+		session.delete(namespace+".deleteRecipeValuation", recipeno);
+	}
+	
 	@Override
 	public List<ValuationVO> listPage(Integer recipeno, Criteria cri)
 	throws Exception {

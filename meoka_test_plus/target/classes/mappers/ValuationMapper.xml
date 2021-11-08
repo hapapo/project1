@@ -32,6 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delete">
 		delete from valuation where memberid = #{memberid} and recipeno = #{recipeno}  
 	</delete>
+	
+	<delete id="deleteRecipeValuation" parameterType="int">
+	delete
+	from
+	book_ex.valuation
+	where recipeno = #{recipeno}
+	</delete>
 
 	<select id="listPage" resultType="ValuationVO">
 		SELECT MEMBERID, RECIPENO, POINT, COMMENTS, REGDATE  FROM
