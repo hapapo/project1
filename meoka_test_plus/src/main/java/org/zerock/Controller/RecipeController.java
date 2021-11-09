@@ -13,13 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.IngredientVO;
 import org.zerock.domain.PageMaker;
 import org.zerock.domain.RecipeDetailVO;
 import org.zerock.domain.RecipeRequest;
 import org.zerock.domain.RecipeVO;
 import org.zerock.domain.SearchCriteria;
+import org.zerock.domain.UtensilVO;
 import org.zerock.domain.ValuationVO;
+import org.zerock.service.IngredientService;
 import org.zerock.service.RecipeService;
+import org.zerock.service.UtensilService;
 import org.zerock.service.ValuationService;
 
 @Controller
@@ -33,6 +37,12 @@ public class RecipeController {
 	
 	@Inject
 	ValuationService service2;
+	
+	@Inject
+	UtensilService serviceUtensil;
+	
+	@Inject
+	IngredientService serviceIngredient;
 
 	// 게시물 목록
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -97,6 +107,19 @@ public class RecipeController {
 		List<RecipeDetailVO> list = service.getRecipeDetailList(RECIPENO);
 		model.addAttribute("RecipeVO", vo);
 		model.addAttribute("list", list);
+		
+		//도구 추가
+		List<UtensilVO> getUtensilList = serviceUtensil.getUtensilList(RECIPENO);
+		model.addAttribute("RecipeVO", vo);
+		model.addAttribute("getUtensilList",getUtensilList);
+		System.out.println(getUtensilList);
+		System.out.println("**************여기까지2222222");
+		//재료추가
+		List<IngredientVO> getIngredientList = serviceIngredient.getIngredientList(RECIPENO);
+		model.addAttribute("RecipeVO", vo);
+		model.addAttribute("getIngredientList",getIngredientList);
+		System.out.println(getIngredientList);
+		System.out.println("**************여기까지333333");
 	}
 
 	// 게시물 수정

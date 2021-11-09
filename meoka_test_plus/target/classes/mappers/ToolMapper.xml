@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zerock.mappers.ToolMapper">
+
+	<!-- 도구시작 -->
+
+	<!--도구랑 레시피 같이 조회 -->
+	<select id="listUtensil" resultType="org.zerock.domain.UtensilVO">
+		select
+		utensilname
+		from recipe r, recipeutensil ru , utensil u
+		where
+		r.recipeno= ru.recipeno and ru.utensilno= u.utensilno
+		and r.recipeno=#{recipeNo}
+	</select>
+	
+	<!-- 도구 삭제 -->
+	<insert id="writeUtensil" parameterType="org.zerock.domain.UtensilVO">
+	 	insert into
+      recipeutensil(recipeno, utensilno)
+      values(RECIPE_RECIPENO_SEQ.CURRVAL,(select utensilno from utensil where utensilname=#{utensilName}))
+	</insert>
+	
+	<!-- 레시피 세부내용 삭제 -->
+	<delete id="deleteUtensil" parameterType="int">
+		delete
+		from
+		recipeutensil
+		where RECIPENO = #{RECIPENO}
+	</delete>
+	
+	
+	<!-- 재료 시작 -->
+	
+	<!--재료랑 레시피 같이 조회 -->
+	<select id="listIngredient" resultType="org.zerock.domain.IngredientVO">
+		select
+		i.ingredienttype, i.ingredientname, i.bestbefore, i.efficacy, i.price
+		from recipe r, ingredient i, recipeingre ri
+		where
+		r.recipeno=ri.recipeno and ri.ingredientno= i.ingredientno
+		and r.recipeno=#{recipeno}
+	</select>
+	
+	<!-- 도구 삭제 -->
+	<insert id="writeIngredient" parameterType="org.zerock.domain.IngredientVO">
+		insert into
+		recipeingre(recipeno, ingredientno)
+		values(#{receipno},#{ingredientno})
+	</insert>
+	
+	<!-- 레시피 세부내용 삭제 -->
+	<delete id="deleteIngredient" parameterType="int">
+		delete
+		from
+		recipeingre
+		where RECIPENO = #{RECIPENO}
+	</delete>
+	
+
+
+</mapper>

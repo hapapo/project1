@@ -63,13 +63,47 @@
 
 	<label>수준</label> ${view.RANKNO }
 	<br />
+	
+		<!-- 도구 -->
+	<h2>사용도구</h2><br>
+	<div id="view">
+		<c:forEach items="${getUtensilList}" var="UtensilVO">
+		${UtensilVO.utensilName } <br>
+		</c:forEach>
+	</div>
+	
+	
+	
+	
+	<!-- 재료 -->
+	<h2>재료</h2>
+	
+	<tr>
+	<th>재료이름</th>
+	<th>재료종류</th>
+	<th>유통기한</th>
+	<th>효능</th>
+	<th>재료가격</th>
+	</tr>
+	
+	<div id="view">
+		<c:forEach items="${getIngredientList}" var="IngredientVO">
+		<td>${IngredientVO.ingredientName }</td>
+		<td>${IngredientVO.ingredientType }</td>
+		<td>${IngredientVO.bestBefore }</td>
+		<td>${IngredientVO.efficacy }</td>
+		<td>${IngredientVO.price }</td>
+		</c:forEach>
+	</div>
 
 	<!-- recipedetail -->
 	<h2>레시피 세부내용</h2>
 	<div id="recipedetailview">
 		<c:forEach items="${list }" var="RecipeDetailVO">
-		${RecipeDetailVO.RECIPEDETAILNO },${RecipeDetailVO.RECIPEDETAIL } <br>
+		${RecipeDetailVO.RECIPEDETAILNO},${RecipeDetailVO.RECIPEDETAIL} <br>
+		<img src="${RecipeDetailVO.PHOTO}"/>
 		</c:forEach>
+		
 	</div>
 	<!-- <button type="submit">작성</button> -->
 	<div>
