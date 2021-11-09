@@ -59,11 +59,11 @@ small {
 					  var str ="";
 					  
 					  if(checkImageType(data)){
-						  str ="<div><a href=displayFile?fileName="+getImageLink(data)+">"
-								  +"<img src='displayFile?fileName="+data+"'/>"
+						  str ="<div><a href=/displayFile?fileName="+getImageLink(data)+">"
+								  +"<img src='/displayFile?fileName="+data+"'/>"
 								  +"</a><small data-src="+data+">X</small></div>";
 					  }else{
-						  str = "<div><a href='displayFile?fileName="+data+"'>" 
+						  str = "<div><a href='/displayFile?fileName="+data+"'>" 
 								  + getOriginalName(data)+"</a>"
 								  +"<small data-src="+data+">X</small></div></div>";
 					  }
