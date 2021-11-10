@@ -15,6 +15,9 @@ public interface UtensilDAO {
 	// 도구 조회
 	public List<UtensilVO> getUtensilList(int recipeno) throws Exception;
 
+	// 도구 수정
+	public void modifyUtensil(UtensilVO vo) throws Exception;
+	
 	// 게시물 삭제
 	public void deleteUtensil(int recipeno) throws Exception;
 		

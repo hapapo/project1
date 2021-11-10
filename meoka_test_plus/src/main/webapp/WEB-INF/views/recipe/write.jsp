@@ -11,12 +11,10 @@
 <script type="text/javascript" src="/resources/js/upload.js"></script>
  <style>
 .fileDrop {
-  width: 80%;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   border: 1px dotted gray;
   background-color: lightslategrey;
-  margin: auto;
-  
 }
 </style>
 
@@ -41,17 +39,8 @@
    <input type="button" value="Create Element" onclick="createNewElement();"/>
 </div>
 
-<div id="newElementId">내 용</div>
+<div id="newElementId"> 내 용 </div>
 
-<!--  파일 업로드 -->
-<div class="form-group">
- 			<input type="hidden" name='recipeDetail[0].PHOTO'>
-			<label for="exampleInputEmail1">File DROP Here</label>
-			<div class="fileDrop">
-			</div>
-			
-		</div>
-		<div class="mailbox-attachments clearfix uploadedList"></div>
 		
 <!-- 파일 업로드 기능 -->		
 
@@ -73,65 +62,6 @@
 	 
 var template = Handlebars.compile($("#template").html());
 
-$(".fileDrop").on("dragenter dragover", function(event){
-	
-	event.preventDefault();
-});
-
-
-
- $(".fileDrop").on("drop", function(event){
-	event.preventDefault();
-	
-	var files = event.originalEvent.dataTransfer.files;
-	
-	var file = files[0];
-
-	var formData = new FormData();
-	
-	formData.append("file", file);	
-	
-	var $this = $(this);
-	$.ajax({
-		  url: '/upload/uploadAjax',
-		  data: formData,
-		  dataType:'text',
-		  processData: false,
-		  contentType: false,
-		  type: 'POST',
-		  success: function(data){
-			
-			  var fileInfo = getFileInfo(data);
-			  console.log(fileInfo);
-			  
-			  var html = template(fileInfo);
-			  
-			  //console.log(fileInfo.imgsrc);
-			  $($this).parent().children(":first").attr("value", fileInfo.imgsrc);
-			  $(".uploadedList").append(html);
-		  }
-		});	 
-});
-
-
- 
-
-$(".uploadedList").on("click", "small", function(event){
-	
-		 var that = $(this);
-	
-	   $.ajax({
-		   url:"/upload/deleteFile",
-		   type:"post",
-		   data: {fileName:$(this).attr("data-src")},
-		   dataType:"text",
-		   success:function(result){
-			   if(result == 'deleted'){
-				   that.parent("div").remove();
-			   }
-		   }
-	   });
-});
 </script>
 
 <!-- 세부내용 인풋박스 추가기능 -->
@@ -143,34 +73,88 @@ function createNewElement() {
 
     // Then add the content (a new input box) of the element.
     						
-	txtNewInputBox.innerHTML = " 조리 방법 <input type='text' name='RECIPEDETAIL'> <input type='button'id='detailRemove' value='삭제' onclick='removeDetail(this)'>";
-
+	txtNewInputBox.innerHTML =  "<div class='form-group'>"
+									+ "<label for='exampleInputEmail1'>File DROP Here</label>"
+									+ "<div class='fileDrop'></div>"
+									+ "<input type='text' name='RECIPEDETAIL'>"
+									+ "<input type='hidden' name ='PHOTO'>"
+									+ "<input type='button' class='removeDetail' value='삭제'>"
+								+"</div>"
+		
+		
+		<!--
+		" 조리 방법 "
+											+ "<div class='form-group'>"
+													+ "<input type='hidden' name='PHOTO'>"
+															+ "<label for='exampleInputEmail1'>"
+																	+ "File DROP Here"
+															+ "</label>"
+													+ "<div class='fileDrop'>"
+													+ "</div>"
+											+ "</div>"
+										+ "<div id='fileDrop' class='mailbox-attachments clearfix uploadedList'>"
+										+ "</div>"
+										+ 
+													
+-->
     // Finally put it where it is supposed to appear.
 	document.getElementById("newElementId").appendChild(txtNewInputBox);
+    
+    //추가해보는거
+	$(".fileDrop").on("dragenter dragover", function(event){
+		event.preventDefault();
+	});
+
+
+
+	 $(".fileDrop").on("drop", function(event){
+		event.preventDefault();
+		
+		var files = event.originalEvent.dataTransfer.files;
+		
+		var file = files[0];
+
+		var formData = new FormData();
+		
+		formData.append("file", file);	
+		
+		var $this = $(this);
+		$.ajax({
+			  url: '/upload/uploadAjax',
+			  data: formData,
+			  dataType:'text',
+			  processData: false,
+			  contentType: false,
+			  type: 'POST',
+			  success: function(data){
+				
+				  var fileInfo = getFileInfo(data);
+				  //console.log(fileInfo);
+				  
+				  var html = template(fileInfo);
+				  //console.log(html);
+				  //console.log(fileInfo.imgsrc);
+				  //console.log($($this).parent());
+				  
+				  //$(".uploadedList").append(html);
+				  $($($this).parent().children("div[class='fileDrop']"))
+				  	.html('<img src="' + fileInfo.imgsrc + '" height="142px" width="142px">');
+				  $($($this).parent().children("input[type='hidden']")).attr("value", fileInfo.imgsrc);
+			  }
+			});	 
+		//consol.log($(this).children(":first").attr("name", "recipeDetail[" + index + "].RECIPEDETAIL" ));
+		//consol.log($(this).children(":eq(1)").attr("name", "recipeDetail[" + index + "].PHOTO" ));
+	});
+	 $(".removeDetail").on("click", function(event){
+		    event.preventDefault();
+		    $(this).parent().parent().remove();
+		});
+
 }
-function removeDetail(createNewElement){
-	document.getElementById("newElementId").removeChild(createNewElement.parentNode);
-}
 
 
 
 
-<!--작성 눌렀을때 인덱스 -->
-function test() {
-		$('#newElementId').children().each(function(index, item)	{
-			$(this).children(":first").attr("name", "recipeDetail[" + index + "].RECIPEDETAIL" );
-			$(this).children(":last").attr("name", "recipeDetail[" + index + "].PHOTO" );
-			})
-		$('#newUtensilId').children().each(function(index, item)	{
-			$(this).children(":first").attr("name", "utensil[" + index + "].utensilName" );
-			})
-		$('#newIngredientId').children().each(function(index, item)	{
-			
-			$(this).children(":eq(0)").attr("name", "ingredient[" + index + "].ingredientName" );
-			$(this).children(":eq(1)").attr("name", "ingredient[" + index + "].amount" );
-			$(this).children(":eq(2)").attr("name", "ingredient[" + index + "].required" );
-		})
-}
 </script>
 
 <!-- 도구 -->
@@ -217,11 +201,57 @@ function removeIngredient(createNewIngredient){
 
 </script>
 
-
-
-
-		<button type="submit" onclick=test()> 작성 </button>
+		<button id="submitButton" type="submit"> 작성 </button>
 	</form>
+
+<script>
+	<!--작성 눌렀을때 인덱스 -->
+
+	$("#submitButton").on("click", function(event){
+		event.preventDefault();
+		//alert();
+		
+		if($("#newElementId").children().length == 0 ) {
+			alert("세부 조리방법을 추가하세요");
+			return;
+		}
+		if($("#newUtensilId").children().length == 0 ) {
+			alert("도구를 추가하세요");
+			return;
+		}
+		if($("#newIngredientId").children().length == 0 ) {
+			alert("재료를 추가하세요");
+			return;
+		}
+		$("#newElementId").children().each(function(index, item) {
+			$(item).children(":eq(0)").children("input[name='RECIPEDETAIL']").attr("name", "recipeDetail[" + index + "].RECIPEDETAIL");
+
+			$(item).children(":eq(0)").children("input[name='PHOTO']").attr("name", "recipeDetail[" + index + "].PHOTO")
+		});
+		
+		/* 
+		$('#newElementId').children(":eq(0)").children().each(function(index, item)	{
+			
+	          $($($(this)).parent().children("input[type='text']")).attr("name", "recipeDetail[" + index + "].RECIPEDETAIL");
+	         $($($(this)).parent().children("input[type='hidden']")).attr("name", "recipeDetail[" + index + "].PHOTO");
+			
+			$(this).children().children(":eq(0)").attr("name", "recipeDetail[" + index + "].RECIPEDETAIL" );
+			$(this).children().children(":eq(1)").attr("name", "recipeDetail[" + index + "].PHOTO" );
+			
+		}) */
+		$('#newUtensilId').children().each(function(index, item)	{
+			$(this).children(":first").attr("name", "utensil[" + index + "].utensilName" );
+			})
+		$('#newIngredientId').children().each(function(index, item)	{
+			
+			$(this).children(":eq(0)").attr("name", "ingredient[" + index + "].ingredientName" );
+			$(this).children(":eq(1)").attr("name", "ingredient[" + index + "].amount" );
+			$(this).children(":eq(2)").attr("name", "ingredient[" + index + "].required" );
+		})
+
+		$("form").submit();
+	});
+	</script>
 
 </body>
 </html>

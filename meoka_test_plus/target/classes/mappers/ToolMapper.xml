@@ -21,7 +21,7 @@
 	<insert id="writeUtensil" parameterType="org.zerock.domain.UtensilVO">
 	 	insert into
       recipeutensil(recipeno, utensilno)
-      values(RECIPE_RECIPENO_SEQ.CURRVAL,(select utensilno from utensil where utensilname=#{utensilName}))
+      values(#{recipeNO},(select utensilno from utensil where utensilname=#{utensilName}))
 	</insert>
 	
 	<!-- 도구 삭제 -->
@@ -34,11 +34,10 @@
 	
 			<!-- 도구 수정 -->
 	<update id="modifyUtensil" parameterType="org.zerock.domain.UtensilVO">
-		update book_ex.RecipeUtensil
-		set
-		utensilNO = #{utensilNO},
-		utensilName = #{utensilName},
-		where RECIPENO = #{recipeNO}
+	update recipeutensil ru
+	set ru.utensilno =(select u.utensilno from utensil u where u.utensilname
+	=#{utensilName})
+	where ru.recipeno=#{recipeNO} and ru.utensilno=#{utensilNO};
 	</update>
 	
 	
@@ -73,12 +72,10 @@
 	
 	<!-- 재료 삭제 -->
 	<update id="modifyIngredient" parameterType="org.zerock.domain.IngredientVO">
-		update book_ex.RecipeIngre
-		set
-		ingredientNo = #{ingredientNo},
-		amount = #{amount},
-		required = #{required},
-		where RECIPENO = #{RECIPENO}
+	update recipeingre ri
+	set ri.ingredientno =(select i.ingredientno from ingredient i WHERE
+	i.ingredientname = #{ingredientName})
+	where ri.recipeno=#{recipeNo} and ri.ingredientno=#{ingredientNo};
 	</update>
 
 

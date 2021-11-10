@@ -176,27 +176,50 @@ public class RecipeController {
 
 	
 	  @RequestMapping(value = "/modify", method = RequestMethod.POST) public String
-	  postModify(RecipeRequest recipeRequest) throws Exception {
-	
-	  System.out.println(recipeRequest);
-	
-	  
-	  int recipeno = service.write(recipeRequest);
+	  postModify(@RequestParam("RECIPENO") int RECIPENO, RecipeRequest recipeRequest) throws Exception {
+		  System.out.println("*************recipeRequest: " + recipeRequest);
+	  RecipeVO vo = service.view(RECIPENO);
+	  int recipeno  = vo.getRECIPENO();
+	  //int recipeno = service.write(recipeRequest);
+	  System.out.println("===========");
+	  System.out.println(recipeno);
 	  recipeRequest.setRECIPENO(recipeno); 
-	  List<RecipeDetailVO> list = service.getRecipeDetailList(recipeno);
+	  //List<RecipeDetailVO> list = service.getRecipeDetailList(recipeno);
 	  //ArrayList<RecipeDetailVO> rd = recipeRequest.getRecipeDetail();
 	  
+	  
+	  serviceUtensil.deleteUtensil(recipeno);
+	  serviceIngredient.deleteIngredient(recipeno);
 	  service.deleteRecipeDetail(recipeno);
-	  int i = 1; 
-	  for (RecipeDetailVO rd : recipeRequest.getRecipeDetail()) { 
-	 rd.setRECIPENO(recipeno);
+		int i=1;
+		for (UtensilVO rd : recipeRequest.getUtensil()) {
+			rd.setRecipeNO(recipeno);
+			rd.setUtensilNO(i);
+			i++;
+			serviceUtensil.writeUtensil(rd);
+		}
+		 System.out.println("===========");
+		  System.out.println("도구 수정 완료.");
+		  
+		 i=1;
+		for (IngredientVO rd : recipeRequest.getIngredient()) {
+		    rd.setIngredientNo(i);
+			rd.setRecipeNo(recipeno);
+			i++;
+			serviceIngredient.writeIngredient(rd);
+		}
+		 System.out.println("===========");
+		  System.out.println("재료 수정 완료.");
+	  
+	   i = 1; 
+	  for (RecipeDetailVO rd : recipeRequest.getRecipeDetail()) {
+		  rd.setRECIPENO(recipeno);
+		  rd.setRECIPEDETAILNO(i);
 	  i++; 
 	  
 	  service.writeRecipeDetail(rd); 
 	  }
 	  service.modify(recipeRequest);
-	  
-	  //service.writeRecipeDetail();
 	  
 	  
 	  return "redirect:/recipe/view?RECIPENO=" + recipeRequest.getRECIPENO(); }
@@ -211,7 +234,7 @@ public class RecipeController {
 		System.out.println("후기 삭제 완료");
 		serviceUtensil.deleteUtensil(recipeno);
 		System.out.println("도구 삭제 완료");
-	    serviceIngredient.deletelIngredient(recipeno);
+	    serviceIngredient.deleteIngredient(recipeno);
 	    System.out.println("재료 삭제 완료");
 		service.deleteRecipeDetail(recipeno);
 		System.out.println("세부 내용 삭제 완료 ******************");

@@ -17,7 +17,7 @@ public class IngredientDAOImpl implements IngredientDAO {
 
 	private static String namespace = "org.zerock.mappers.ToolMapper";
 
-	// 레시피 디테일 작성
+	// 재료 작성
 	public RecipeRequest recipeno(int recipeno) throws Exception {
 		return sql.selectOne(namespace + ".recipeno", recipeno);
 	}
@@ -26,9 +26,14 @@ public class IngredientDAOImpl implements IngredientDAO {
 		sql.insert(namespace + ".writeIngredient", rd);
 	}
 
-	// 레시피 세부내용 삭제
+	// 재료 삭제
 	public void deleteIngredient(int recipeno) throws Exception{
 		sql.delete(namespace+".deleteIngredient", recipeno);
+	}
+	
+	// 재료 수정
+	public void modifyIngredient(IngredientVO vo) throws Exception{
+		sql.update(namespace+".modifyIngredient");
 	}
 
 	@Override

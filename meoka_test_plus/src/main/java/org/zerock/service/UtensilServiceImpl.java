@@ -30,6 +30,10 @@ public class UtensilServiceImpl implements UtensilService {
 		dao.deleteUtensil(recipeno);
 	}
 	
+	// 도구 수정
+	public void modifyUtensil(UtensilVO vo) throws Exception{
+		dao.modifyUtensil(vo);
+	}
 	
 	// 도구 추가
 	public List<UtensilVO> getUtensilList(int recipeno) throws Exception {

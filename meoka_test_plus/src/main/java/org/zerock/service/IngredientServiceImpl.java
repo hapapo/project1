@@ -27,10 +27,14 @@ public class IngredientServiceImpl implements IngredientService {
 
 
 	// 재료 삭제
-	public void deletelIngredient(int recipeno) throws Exception{
+	public void deleteIngredient(int recipeno) throws Exception{
 		dao.deleteIngredient(recipeno);
 	}
 	
+	// 재료 수정
+	public void modifyIngredient(IngredientVO vo) throws Exception{
+		dao.modifyIngredient(vo);
+	}
 
 	// 재료 추가
 	public List<IngredientVO> getIngredientList(int recipeno) throws Exception {

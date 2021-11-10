@@ -79,11 +79,11 @@
 	<h2>재료</h2>
 	
 	<tr>
-	<th>재료이름</th>
-	<th>재료종류</th>
-	<th>유통기한</th>
-	<th>효능</th>
-	<th>재료가격</th>
+	<th> 이름 </th>
+	<th> 종류 </th>
+	<th> 유통기한 </th>
+	<th> 효능 </th>
+	<th> 가격 </th>
 	</tr>
 	
 	<div id="view">

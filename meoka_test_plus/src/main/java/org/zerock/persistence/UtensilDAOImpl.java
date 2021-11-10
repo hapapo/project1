@@ -17,7 +17,7 @@ public class UtensilDAOImpl implements UtensilDAO {
 
 	private static String namespace = "org.zerock.mappers.ToolMapper";
 
-	// 레시피 디테일 작성
+	// 도구 작성
 	public RecipeRequest recipeno(int recipeno) throws Exception {
 		return sql.selectOne(namespace + ".recipeno", recipeno);
 	}
@@ -26,9 +26,14 @@ public class UtensilDAOImpl implements UtensilDAO {
 		sql.insert(namespace + ".writeUtensil", rd);
 	}
 
-	// 레시피 세부내용 삭제
+	// 도구 삭제
 	public void deleteUtensil(int recipeno) throws Exception{
 		sql.delete(namespace+".deleteUtensil", recipeno);
+	}
+	
+	// 도구 수정
+	public void modifyUtensil(UtensilVO vo) throws Exception{
+		sql.update(namespace+".modifyUtensil");
 	}
 
 	@Override
