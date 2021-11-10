@@ -24,13 +24,22 @@
       values(RECIPE_RECIPENO_SEQ.CURRVAL,(select utensilno from utensil where utensilname=#{utensilName}))
 	</insert>
 	
-	<!-- 레시피 세부내용 삭제 -->
+	<!-- 도구 삭제 -->
 	<delete id="deleteUtensil" parameterType="int">
 		delete
 		from
 		recipeutensil
 		where RECIPENO = #{RECIPENO}
 	</delete>
+	
+			<!-- 도구 수정 -->
+	<update id="modifyUtensil" parameterType="org.zerock.domain.UtensilVO">
+		update book_ex.RecipeUtensil
+		set
+		utensilNO = #{utensilNO},
+		utensilName = #{utensilName},
+		where RECIPENO = #{recipeNO}
+	</update>
 	
 	
 	<!-- 재료 시작 -->
@@ -45,14 +54,16 @@
 		and r.recipeno=#{recipeno}
 	</select>
 	
-	<!-- 도구 삭제 -->
+	<!-- 재료 작성 -->
 	<insert id="writeIngredient" parameterType="org.zerock.domain.IngredientVO">
-		insert into
-		recipeingre(recipeno, ingredientno)
-		values(#{receipno},#{ingredientno})
+	  insert into
+      recipeingre(recipeno, ingredientno, amount, required)
+      values(#{recipeNo},
+      (select ingredientno from ingredient where ingredientname=#{ingredientName}),
+      #{amount}, #{required})
 	</insert>
 	
-	<!-- 레시피 세부내용 삭제 -->
+	<!-- 재료 삭제 -->
 	<delete id="deleteIngredient" parameterType="int">
 		delete
 		from
@@ -60,6 +71,15 @@
 		where RECIPENO = #{RECIPENO}
 	</delete>
 	
+	<!-- 재료 삭제 -->
+	<update id="modifyIngredient" parameterType="org.zerock.domain.IngredientVO">
+		update book_ex.RecipeIngre
+		set
+		ingredientNo = #{ingredientNo},
+		amount = #{amount},
+		required = #{required},
+		where RECIPENO = #{RECIPENO}
+	</update>
 
 
 </mapper>

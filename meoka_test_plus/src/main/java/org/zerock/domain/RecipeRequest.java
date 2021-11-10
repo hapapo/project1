@@ -24,6 +24,8 @@ public class RecipeRequest {
 	private int RANKNO;
 	
 	ArrayList<RecipeDetailVO> recipeDetail;
+	ArrayList<UtensilVO> utensil;
+	ArrayList<IngredientVO> ingredient;
 	
 	/*	private Integer recipeNo;
 	private Integer recipeDetailNo;

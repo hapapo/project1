@@ -13,4 +13,6 @@ public class IngredientVO {
 	private String efficacy;
 	private Integer price;
 	
+	private String amount;
+	private String required;
 }

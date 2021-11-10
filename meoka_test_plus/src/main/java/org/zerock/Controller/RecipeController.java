@@ -83,6 +83,28 @@ public class RecipeController {
 			i++;
 			service.writeRecipeDetail(rd);
 		}
+		
+		i=1;
+		for (UtensilVO rd : recipeRequest.getUtensil()) {
+			rd.setRecipeNO(recipeno);
+			rd.setUtensilNO(i);
+			 //rd.setRECIPENO(recipeno); 
+			 //rd.setRECIPEDETAILNO(i);
+			 
+			i++;
+			//service.writeRecipeDetail(rd);
+			serviceUtensil.writeUtensil(rd);
+		}
+		i=1;
+		for (IngredientVO rd : recipeRequest.getIngredient()) {
+			//rd.setRecipeNO(recipeno);
+			//rd.setUtensilNO(i);
+			 rd.setRecipeNo(recipeno);
+			 rd.setIngredientNo(i);
+			i++;
+			//serviceUtensil.writeUtensil(rd);
+			serviceIngredient.writeIngredient(rd);
+		}
 
 		// 입력한 데이터에 대한 recipeno를 찾아온다.
 
@@ -186,12 +208,16 @@ public class RecipeController {
 		
 		System.out.println("recipeno******"+vo.getRecipeno());
 		service2.deleteRecipeValuation(recipeno);
-		System.out.println("delete 1*******************");
+		System.out.println("후기 삭제 완료");
+		serviceUtensil.deleteUtensil(recipeno);
+		System.out.println("도구 삭제 완료");
+	    serviceIngredient.deletelIngredient(recipeno);
+	    System.out.println("재료 삭제 완료");
 		service.deleteRecipeDetail(recipeno);
-		System.out.println("delete 2******************");
+		System.out.println("세부 내용 삭제 완료 ******************");
 
 		service.delete(recipeno);
-		System.out.println("delete 3*******************");
+		System.out.println("레시피 삭제 완료 *******************");
 
 		return "redirect:/recipe/list";
 	}

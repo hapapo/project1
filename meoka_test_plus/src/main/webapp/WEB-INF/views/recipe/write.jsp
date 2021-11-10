@@ -45,7 +45,7 @@
 
 <!--  파일 업로드 -->
 <div class="form-group">
-<!-- 		<input type="hidden" name='recipeDetail[0].PHOTO'> -->
+ 			<input type="hidden" name='recipeDetail[0].PHOTO'>
 			<label for="exampleInputEmail1">File DROP Here</label>
 			<div class="fileDrop">
 			</div>
@@ -143,20 +143,33 @@ function createNewElement() {
 
     // Then add the content (a new input box) of the element.
     						
-	txtNewInputBox.innerHTML = "<input type='text' name='RECIPEDETAIL'><input type='text' name='PHOTO'>";
+	txtNewInputBox.innerHTML = " 조리 방법 <input type='text' name='RECIPEDETAIL'> <input type='button'id='detailRemove' value='삭제' onclick='removeDetail(this)'>";
 
     // Finally put it where it is supposed to appear.
 	document.getElementById("newElementId").appendChild(txtNewInputBox);
 }
+function removeDetail(createNewElement){
+	document.getElementById("newElementId").removeChild(createNewElement.parentNode);
+}
 
+
+
+
+<!--작성 눌렀을때 인덱스 -->
 function test() {
 		$('#newElementId').children().each(function(index, item)	{
 			$(this).children(":first").attr("name", "recipeDetail[" + index + "].RECIPEDETAIL" );
 			$(this).children(":last").attr("name", "recipeDetail[" + index + "].PHOTO" );
-})
-$('#newUtensilId').children().each(function(index, item)	{
+			})
+		$('#newUtensilId').children().each(function(index, item)	{
 			$(this).children(":first").attr("name", "utensil[" + index + "].utensilName" );
-})
+			})
+		$('#newIngredientId').children().each(function(index, item)	{
+			
+			$(this).children(":eq(0)").attr("name", "ingredient[" + index + "].ingredientName" );
+			$(this).children(":eq(1)").attr("name", "ingredient[" + index + "].amount" );
+			$(this).children(":eq(2)").attr("name", "ingredient[" + index + "].required" );
+		})
 }
 </script>
 
@@ -172,12 +185,37 @@ function createNewUtensil() {
 	var NewInputBox = document.createElement('div');
 
     // Then add the content (a new input box) of the element.
-	NewInputBox.innerHTML = "<input type='text' name='utensilName'>";
+	NewInputBox.innerHTML = " 요리도구 <input type='text' name='utensilName'><input type='button' value='삭제'onclick='remove(this)'>";
 
     // Finally put it where it is supposed to appear.
 	document.getElementById("newUtensilId").appendChild(NewInputBox);
 }
+function remove(createNewUtensil){
+	document.getElementById("newUtensilId").removeChild(createNewUtensil.parentNode);
+}
 </script>		
+<!-- 조리도구 끝 -->
+<!-- 재료 시작-->
+<h2>재료 작성</h2>
+
+<div id="newIngredientId">New inputbox goes here:</div>
+<div id="dynamicCheck">
+   <input type="button" value="Create Ingredient" onclick="createNewIngredient();"/>
+</div>
+<script>
+function createNewIngredient() {
+	var NewInputBox = document.createElement('div');
+
+	NewInputBox.innerHTML = " 재료이름 <input type='text' name='ingredientName'> 양 <input type='text' name='amount'> 필수여부 <input type='text' name='required'> <input type='button' value='삭제'onclick='removeIngredient(this)'>";
+	
+	document.getElementById("newIngredientId").appendChild(NewInputBox);
+}
+
+function removeIngredient(createNewIngredient){
+	document.getElementById("newIngredientId").removeChild(createNewIngredient.parentNode);
+}
+
+</script>
 
 
 
